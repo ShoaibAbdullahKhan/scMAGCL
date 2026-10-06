@@ -3,11 +3,6 @@ scMAGCL: Multi-level multi-attention based graph contrastive learning approach f
 
 ![Architecture](scMAGCL.jpg)
 
-scMAGCL encodes each cell's expression profile and a gene-masked copy of it with a shared autoencoder. At three depths (the latent space, the decoder's hidden layer and the reconstruction), multi-head attention builds cell-cell graphs:
-- self-attention within each view gives the intra-cell graphs;
-- cross-attention between the two views gives the inter-cell graphs.
-
-A graph contrastive loss at each of these depths, together with a reconstruction loss, trains the model. Cells are then clustered with k-means in the 128-dimensional latent space.
 
 ---
 
