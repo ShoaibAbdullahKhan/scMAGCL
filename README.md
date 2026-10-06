@@ -34,7 +34,7 @@ Tested with Python 3.11, PyTorch 2.7.1 (CUDA 12.8), NumPy 2.1.3, pandas 2.2.3, s
 
 All of the processed datasets used for training and evaluation can be found at the following link:
 
-https://zenodo.org/records/21346328
+https://zenodo.org/records/23186443
 
 Each dataset is a single `.h5` file with two keys:
 
@@ -45,13 +45,6 @@ Each dataset is a single `.h5` file with two keys:
 
 Two example datasets, Adam and Pollen, are included in `data/`.
 
-```python
-import h5py
-with h5py.File('data/pollen.h5', 'r') as f:
-    X, Y = f['X'][()], f['Y'][()]
-```
-
----
 
 ## 🚀 Usage
 
@@ -84,13 +77,6 @@ python main.py --dataset ./data/pollen.h5 --batch_size 128
 | `--batch_size` | Training batch size (default: `batch_size` in `config.py`) |
 
 The batch sizes used in the paper depend on the number of cells: 128 for fewer than 4,000 cells, 512 for 4,000–8,000 cells and 1024 for larger datasets.
-
-The script runs these steps:
-1. It splits the cells into a training set (80%) and a test set (20%), stratified by cell type.
-2. It trains scMAGCL on the training cells. After every epoch, it embeds the test cells.
-3. It keeps the test-set embedding from the epoch with the lowest test reconstruction loss.
-4. It clusters that embedding with k-means, where k is the number of cell types in `Y`.
-5. It reports clustering accuracy (ACC), normalized mutual information (NMI) and adjusted Rand index (ARI).
 
 ### 3. Output
 
