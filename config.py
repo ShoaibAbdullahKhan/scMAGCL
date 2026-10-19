@@ -11,7 +11,7 @@ def get_config():
 
         # Loss
         'lambda_recon': 1.0,    # Weight of the reconstruction (MSE) loss
-        'lambda_contrast': 1.0, # Weight of the graph contrastive loss
+        'lambda_contrast': 1.2, # Weight of the graph contrastive loss
         'alpha': 0.55,          # Weight of the original -> augmented contrastive term
         'beta': 0.4,            # Weight of the augmented -> original contrastive term
         'temperature': 0.5,     # Temperature of the contrastive loss
