@@ -1,7 +1,3 @@
-"""
-Utility functions for Dual Autoencoder model
-"""
-
 import torch
 import numpy as np
 import pandas as pd
@@ -19,7 +15,6 @@ import umap
 # ============================================================================
 
 def setup_seed(seed):
-    """Set random seeds for reproducibility"""
     random.seed(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
     np.random.seed(seed)
@@ -35,20 +30,6 @@ def setup_seed(seed):
 # ============================================================================
 
 def create_augmented_data(x, mask_prob=0.25):
-    """
-    Create augmented data by randomly masking genes to zero and adding
-    random Gaussian noise.
-
-    Args:
-        x: Input data [batch_size, n_genes]
-        mask_prob: Probability of masking each gene
-        noise_std: Standard deviation of the additive Gaussian noise
-                   (set to 0 to disable the noise augmentation)
-
-    Returns:
-        x_aug: Augmented data with some genes masked to zero and Gaussian
-               noise added to the surviving (unmasked) genes
-    """
     mask = torch.bernoulli(torch.ones_like(x) * mask_prob).bool()
     x_aug = x.clone()
     x_aug[mask] = 0
@@ -62,7 +43,6 @@ def create_augmented_data(x, mask_prob=0.25):
 # ============================================================================
 
 class scRNASeqDataset(Dataset):
-    """PyTorch Dataset for scRNA-seq data"""
     
     def __init__(self, expression_matrix, labels=None):
         if isinstance(expression_matrix, pd.DataFrame):
@@ -87,7 +67,6 @@ class scRNASeqDataset(Dataset):
 # ============================================================================
 
 def cluster_acc(y_true, y_pred):
-    """Calculate clustering accuracy using Hungarian algorithm"""
     y_true = y_true.astype(np.int64)
     y_pred = y_pred.astype(np.int64)
     
@@ -102,7 +81,6 @@ def cluster_acc(y_true, y_pred):
 
 
 def evaluate_clustering(y_true, y_pred):
-    """Evaluate clustering performance using multiple metrics"""
     unique_labels = np.unique(y_true)
     label_map = {old: new for new, old in enumerate(unique_labels)}
     y_true_encoded = np.array([label_map[label] for label in y_true])
@@ -119,19 +97,6 @@ def evaluate_clustering(y_true, y_pred):
 # ============================================================================
 
 def visualize_and_evaluate(latent, labels, n_clusters, seed=42, save_dir='results_dual_ae'):
-    """
-    Perform clustering and UMAP visualization
-    
-    Args:
-        latent: Latent representations [n_samples, 128]
-        labels: True labels
-        n_clusters: Number of clusters for K-means
-        seed: Random seed
-        save_dir: Directory to save results
-        
-    Returns:
-        tuple: (accuracy, NMI, ARI)
-    """
     from sklearn.cluster import KMeans
     
     os.makedirs(save_dir, exist_ok=True)
